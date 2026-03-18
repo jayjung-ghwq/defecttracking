@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Defect Ticket Automation System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg: #020617;
+            --card-bg: #0f172a;
+            --border: rgba(255, 255, 255, 0.1);
+            --primary: #3b82f6;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --text: #f1f5f9;
+            --text-dim: #94a3b8;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 60px 20px;
+            min-height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 80px;
+            max-width: 700px;
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: 700;
+            margin: 0 0 16px 0;
+            background: linear-gradient(90deg, #fff, var(--text-dim));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            color: var(--text-dim);
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        /* Workflow Container */
+        .workflow-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 1000px;
+            position: relative;
+        }
+
+        /* Node Styling */
+        .node {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            width: 280px;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .node:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .node-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+
+        .node-title {
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .node-desc {
+            font-size: 14px;
+            color: var(--text-dim);
+            line-height: 1.5;
+        }
+
+        .node-tech {
+            margin-top: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Connectors */
+        .connector-v {
+            width: 2px;
+            height: 60px;
+            background: linear-gradient(var(--primary), var(--accent));
+            position: relative;
+        }
+
+        .connector-v::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: -4px;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 8px solid var(--accent);
+        }
+
+        /* Branching Logic */
+        .branch-container {
+            display: flex;
+            justify-content: center;
+            gap: 100px;
+            width: 100%;
+            margin: 40px 0;
+            position: relative;
+        }
+
+        /* SVG Overlay for complex paths */
+        .svg-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Horizontal/Split Connectors */
+        .branch-line {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            width: 380px;
+            height: 40px;
+            border: 2px solid var(--accent);
+            border-bottom: none;
+            border-radius: 20px 20px 0 0;
+            transform: translateX(-50%);
+        }
+
+        /* Specific Node Colors */
+        .node.trigger { border-left: 4px solid var(--primary); }
+        .node.process { border-left: 4px solid var(--accent); }
+        .node.success { border-left: 4px solid var(--success); }
+
+        @media (max-width: 800px) {
+            .branch-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 40px;
+            }
+            .branch-line { display: none; }
+            .connector-v.mobile-only { display: block; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div style="background: rgba(59, 130, 246, 0.1); color: var(--primary); padding: 6px 16px; border-radius: 100px; display: inline-block; font-size: 12px; font-weight: 700; margin-bottom: 16px; letter-spacing: 1px;">WORKFLOW ARCHITECTURE</div>
+        <h1>Defect Ticket Automation System</h1>
+        <p>Visualizing the data flow from initial capture through processing to operational and analytical endpoints.</p>
+    </div>
+
+    <div class="workflow-container">
+        
+        <!-- STEP 1 -->
+        <div class="node trigger">
+            <div class="node-icon"><i class="fa-solid fa-wpforms"></i></div>
+            <span class="node-title">Intake & Submission</span>
+            <p class="node-desc">User submits defect details, environmental metadata, and attachments.</p>
+            <div class="node-tech">Google Form UI</div>
+        </div>
+
+        <div class="connector-v"></div>
+
+        <!-- STEP 2 -->
+        <div class="node process">
+            <div class="node-icon"><i class="fa-solid fa-gears"></i></div>
+            <span class="node-title">The Logic Engine</span>
+            <p class="node-desc">On-submit trigger parses raw data, handles assets, and orchestrates API calls.</p>
+            <div class="node-tech">Apps Script / Node.js</div>
+        </div>
+
+        <!-- BRANCHING START -->
+        <div class="branch-container">
+            <svg class="svg-overlay" preserveAspectRatio="none">
+                <!-- Using path for branching lines -->
+                <path d="M500,0 L500,20 Q500,40 460,40 L240,40 Q200,40 200,60 L200,80" fill="none" stroke="#06b6d4" stroke-width="2" />
+                <path d="M500,0 L500,20 Q500,40 540,40 L760,40 Q800,40 800,60 L800,80" fill="none" stroke="#06b6d4" stroke-width="2" />
+            </svg>
+
+            <!-- PATH A -->
+            <div class="node">
+                <div class="node-icon"><i class="fa-solid fa-database"></i></div>
+                <span class="node-title">Audit Persistence</span>
+                <p class="node-desc">Record is saved to the master SQL log for long-term historical audit.</p>
+                <div class="node-tech">Google Cloud SQL</div>
+            </div>
+
+            <!-- PATH B -->
+            <div class="node">
+                <div class="node-icon"><i class="fa-brands fa-jira"></i></div>
+                <span class="node-title">Ticket Execution</span>
+                <p class="node-desc">REST API call creates a pre-populated ticket in the agile backlog.</p>
+                <div class="node-tech">Jira Cloud API</div>
+            </div>
+        </div>
+
+        <div class="connector-v"></div>
+
+        <!-- STEP 3 -->
+        <div class="node process">
+            <div class="node-icon"><i class="fa-solid fa-sync"></i></div>
+            <span class="node-title">Bi-Directional Sync</span>
+            <p class="node-desc">Middleware keeps the SQL log updated with Jira status changes.</p>
+            <div class="node-tech">Sync Cron Job</div>
+        </div>
+
+        <div class="connector-v"></div>
+
+        <!-- FINAL OUTPUTS -->
+        <div class="branch-container">
+             <svg class="svg-overlay" preserveAspectRatio="none">
+                <path d="M500,0 L500,20 Q500,40 460,40 L240,40 Q200,40 200,60 L200,80" fill="none" stroke="#10b981" stroke-width="2" />
+                <path d="M500,0 L500,20 Q500,40 540,40 L760,40 Q800,40 800,60 L800,80" fill="none" stroke="#10b981" stroke-width="2" />
+            </svg>
+
+            <!-- OUTPUT 1 -->
+            <div class="node success">
+                <div class="node-icon"><i class="fa-solid fa-chart-pie"></i></div>
+                <span class="node-title">Analytical View</span>
+                <p class="node-desc">Strategic reporting on fix velocity and defect density trends.</p>
+                <div class="node-tech">Looker Studio</div>
+            </div>
+
+            <!-- OUTPUT 2 -->
+            <div class="node success">
+                <div class="node-icon"><i class="fa-solid fa-gauge-high"></i></div>
+                <span class="node-title">Operational View</span>
+                <p class="node-desc">Real-time wallboard for dev triage and priority monitoring.</p>
+                <div class="node-tech">Custom Web App</div>
+            </div>
+        </div>
+
+    </div>
+
+    <div style="margin-top: 80px; text-align: center; color: var(--text-dim); font-size: 14px; border-top: 1px solid var(--border); padding-top: 20px; width: 100%; max-width: 600px;">
+        &copy; 2026 Defect Automation Framework - Technical Documentation Visual
+    </div>
+
+    <script>
+        // Simple script to adjust SVG paths on window resize if needed
+        window.addEventListener('resize', () => {
+            const container = document.querySelector('.branch-container');
+            const svg = document.querySelector('.svg-overlay');
+            // Logic to dynamically redraw if viewport changes drastically
+        });
+    </script>
+</body>
+</html>
