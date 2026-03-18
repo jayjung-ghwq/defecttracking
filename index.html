@@ -189,14 +189,14 @@
 
     <div class="header">
         <div style="background: rgba(59, 130, 246, 0.1); color: var(--primary); padding: 6px 16px; border-radius: 100px; display: inline-block; font-size: 12px; font-weight: 700; margin-bottom: 16px; letter-spacing: 1px;">WORKFLOW ARCHITECTURE</div>
-        <h1>Defect Ticket Automation System</h1>
+        <h1>Defect Ticket Orchestration</h1>
         <p>Visualizing the data flow from initial capture through processing to operational and analytical endpoints.</p>
     </div>
 
     <div class="workflow-container">
         
         <!-- STEP 1 -->
-        <div class="node trigger">
+        <div class="node trigger" style="width: 50%">
             <div class="node-icon"><i class="fa-solid fa-wpforms"></i></div>
             <span class="node-title">Intake & Submission</span>
             <p class="node-desc">User submits defect details, environmental metadata, and attachments.</p>
@@ -206,11 +206,13 @@
         <div class="connector-v"></div>
 
         <!-- STEP 2 -->
-        <div class="node process">
+        <div class="node process" style="width: 65%">
             <div class="node-icon"><i class="fa-solid fa-gears"></i></div>
-            <span class="node-title">The Logic Engine</span>
+            <span class="node-title">The Logic</span>
             <p class="node-desc">On-submit trigger parses raw data, handles assets, and orchestrates API calls.</p>
-            <div class="node-tech">Apps Script / Node.js</div>
+            <p class="node-desc"><strong>Database Insert:</strong> The script opens a JDBC connection to Google Cloud SQL database to log the entry.</p>
+            <p class="node-desc"><strong>Jira API Call (sends a POST request):</strong> It maps the Form fields to Jira fields</p>
+            <div class="node-tech">Google Apps Script / Node.js</div>
         </div>
 
         <!-- BRANCHING START -->
@@ -224,8 +226,9 @@
             <!-- PATH A -->
             <div class="node">
                 <div class="node-icon"><i class="fa-solid fa-database"></i></div>
-                <span class="node-title">Audit Persistence</span>
-                <p class="node-desc">Record is saved to the master SQL log for long-term historical audit.</p>
+                <span class="node-title">Persistence Data Storage</span>
+                <p class="node-desc">Record is saved to the master SQL log for long-term audit.</p>
+                <p class="node-desc">A proper SQL database allows your Custom Web Dashboard to run fast queries and handle multiple defects without lag.</p>
                 <div class="node-tech">Google Cloud SQL</div>
             </div>
 
@@ -233,7 +236,7 @@
             <div class="node">
                 <div class="node-icon"><i class="fa-brands fa-jira"></i></div>
                 <span class="node-title">Ticket Execution</span>
-                <p class="node-desc">REST API call creates a pre-populated ticket in the agile backlog.</p>
+                <p class="node-desc">REST API call creates a Jira ticket.</p>
                 <div class="node-tech">Jira Cloud API</div>
             </div>
         </div>
@@ -261,15 +264,15 @@
             <div class="node success">
                 <div class="node-icon"><i class="fa-solid fa-chart-pie"></i></div>
                 <span class="node-title">Analytical View</span>
-                <p class="node-desc">Strategic reporting on fix velocity and defect density trends.</p>
+                <p class="node-desc">Interactive Chart-Based Dashboard</p>
                 <div class="node-tech">Looker Studio</div>
             </div>
 
             <!-- OUTPUT 2 -->
             <div class="node success">
                 <div class="node-icon"><i class="fa-solid fa-gauge-high"></i></div>
-                <span class="node-title">Operational View</span>
-                <p class="node-desc">Real-time wallboard for dev triage and priority monitoring.</p>
+                <span class="node-title">Front-End Operational View</span>
+                <p class="node-desc">A real-time web view for the team to see "Live" status.</p>
                 <div class="node-tech">Custom Web App</div>
             </div>
         </div>
