@@ -35,7 +35,7 @@
 
         .header {
             text-align: center;
-            margin-bottom: 80px;
+            margin-bottom: 20px;
             max-width: 700px;
         }
 
@@ -196,11 +196,20 @@
     <div class="workflow-container">
         
         <!-- STEP 1 -->
-        <div class="node trigger" style="width: 50%">
-            <div class="node-icon"><i class="fa-solid fa-wpforms"></i></div>
-            <span class="node-title">Intake & Submission</span>
-            <p class="node-desc">User submits defect details, environmental metadata, and attachments.</p>
-            <div class="node-tech">Google Form UI</div>
+        <div class="branch-container">
+            <div class="node trigger">
+                <div class="node-icon"><i class="fa-solid fa-wpforms"></i></div>
+                <span class="node-title">Web Form Intake</span>
+                <p class="node-desc">Users submit defect details, environmental metadata, and attachments via Google Forms.</p>
+                <div class="node-tech"><a class="node-tech" target="_blank" href="https://developers.google.com/workspace/forms">Google Form UI</a></div>
+            </div>
+
+            <div class="node trigger">
+                <div class="node-icon"><i class="fa-solid fa-envelope"></i></div>
+                <span class="node-title">Email Reporting</span>
+                <p class="node-desc">Users send defects directly to a dedicated inbox.</p>
+                <div class="node-tech"><a class="node-tech" target="_blank" href="https://developers.google.com/workspace/gmail/api/reference/rest">Gmail API Parser</a></div>
+            </div>
         </div>
 
         <div class="connector-v"></div>
@@ -209,10 +218,11 @@
         <div class="node process" style="width: 65%">
             <div class="node-icon"><i class="fa-solid fa-gears"></i></div>
             <span class="node-title">The Logic</span>
-            <p class="node-desc">On-submit trigger parses raw data, handles assets, and orchestrates API calls.</p>
+            <p class="node-desc"><strong>Google Form API:</strong> On-submit trigger parses raw data, handles assets, and orchestrates API calls.</p>
+            <p class="node-desc"><strong>Gmail API:</strong> Use HTTP requests to authenticate and retrieve full message payloads. Parse the email for Jira API Call and Database </p>
             <p class="node-desc"><strong>Database Insert:</strong> The script opens a JDBC connection to Google Cloud SQL database to log the entry.</p>
             <p class="node-desc"><strong>Jira API Call (sends a POST request):</strong> It maps the Form fields to Jira fields</p>
-            <div class="node-tech">Google Apps Script / Node.js</div>
+            <div class="node-tech"><a class="node-tech" target="_blank" href="https://developers.google.com/apps-script">Google Apps Script</a> / Node.js</div>
         </div>
 
         <!-- BRANCHING START -->
@@ -228,16 +238,16 @@
                 <div class="node-icon"><i class="fa-solid fa-database"></i></div>
                 <span class="node-title">Persistence Data Storage</span>
                 <p class="node-desc">Record is saved to the master SQL log for long-term audit.</p>
-                <p class="node-desc">A proper SQL database allows your Custom Web Dashboard to run fast queries and handle multiple defects without lag.</p>
-                <div class="node-tech">Google Cloud SQL</div>
+                <p class="node-desc">A proper SQL database allows Custom Web Dashboard to run fast queries and handle multiple defects without lag.</p>
+                <div class="node-tech"><a class="node-tech" target="_blank" href="https://cloud.google.com/sql">Google Cloud SQL</a></div>
             </div>
 
             <!-- PATH B -->
             <div class="node">
                 <div class="node-icon"><i class="fa-brands fa-jira"></i></div>
-                <span class="node-title">Ticket Execution</span>
+                <span class="node-title">Jira Ticket Execution</span>
                 <p class="node-desc">REST API call creates a Jira ticket.</p>
-                <div class="node-tech">Jira Cloud API</div>
+                <div class="node-tech"><a class="node-tech" target="_blank" href="https://developer.atlassian.com/cloud/jira/platform/rest/v3/">Jira Cloud API</a></div>
             </div>
         </div>
 
@@ -248,7 +258,7 @@
             <div class="node-icon"><i class="fa-solid fa-sync"></i></div>
             <span class="node-title">Bi-Directional Sync</span>
             <p class="node-desc">Middleware keeps the SQL log updated with Jira status changes.</p>
-            <div class="node-tech">Sync Cron Job</div>
+            <div class="node-tech"><a class="node-tech" target="_blank" href="https://docs.cloud.google.com/scheduler/docs/creating">Sync Cron Job</a></div>
         </div>
 
         <div class="connector-v"></div>
@@ -265,7 +275,7 @@
                 <div class="node-icon"><i class="fa-solid fa-chart-pie"></i></div>
                 <span class="node-title">Analytical View</span>
                 <p class="node-desc">Interactive Chart-Based Dashboard</p>
-                <div class="node-tech">Looker Studio</div>
+                <div class="node-tech"><a class="node-tech" target="_blank" href="https://lookerstudio.google.com/navigation/reporting">Looker Studio</a></div>
             </div>
 
             <!-- OUTPUT 2 -->
@@ -273,14 +283,14 @@
                 <div class="node-icon"><i class="fa-solid fa-gauge-high"></i></div>
                 <span class="node-title">Front-End Operational View</span>
                 <p class="node-desc">A real-time web view for the team to see "Live" status.</p>
-                <div class="node-tech">Custom Web App</div>
+                <div class="node-tech"><a class="node-tech" target="_blank" href="https://cloud.google.com/run#websites-and-web-applications">Custom Web App with Cloud Run</a></div>
             </div>
         </div>
 
     </div>
 
     <div style="margin-top: 80px; text-align: center; color: var(--text-dim); font-size: 14px; border-top: 1px solid var(--border); padding-top: 20px; width: 100%; max-width: 600px;">
-        &copy; 2026 Defect Automation Framework - Technical Documentation Visual
+        &copy; 2026 Defect Ticket System Workflow
     </div>
 
     <script>
